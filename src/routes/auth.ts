@@ -1,8 +1,8 @@
 import { express } from "../app"
+import { Login } from "../controllers/authController"
 
 const router = express.Router()
-const authController = require('../controllers/authController')
 
-router.post('/', authController.login)
+router.post('/', Login)
 
 module.exports = router

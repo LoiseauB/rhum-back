@@ -19,12 +19,16 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     pseudo: {
       type: DataTypes.STRING,
       field: 'pseudo',
-      allowNull: false
+      allowNull: false,
+      unique: true,
+      validate: {
+        min: 3
+      }
     },
     role: {
       type: DataTypes.STRING,
