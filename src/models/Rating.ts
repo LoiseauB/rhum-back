@@ -9,11 +9,15 @@ const Rating = sequelize.define(
     rating: {
       type: DataTypes.TINYINT,
       field: 'rating',
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isIn: [[1,2,3,4,5]]
+      }
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: "users",
         key: "id",
@@ -23,6 +27,7 @@ const Rating = sequelize.define(
     bottleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: "bottles",
         key: "id",

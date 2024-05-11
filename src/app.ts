@@ -11,6 +11,7 @@ const defaultRoutes: Router = require("./routes/default");
 const authRoutes: Router = require("./routes/auth");
 const registerRoutes: Router = require("./routes/register");
 const userRoutes: Router = require("./routes/user");
+const ratingRoutes: Router = require("./routes/rating");
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -22,3 +23,4 @@ app.use("/api", defaultRoutes);
 app.use("/api/login", authRoutes);
 app.use("/api/register", registerRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/rating", ratingRoutes);

@@ -46,7 +46,7 @@ export const updateUser = async (req: Request, res: Response) => {
     });
     if (updated) {
       const updatedUser = await User.findByPk(req.body.userInfos.id);
-      res.status(200).json(updatedUser);
+      return res.json(updatedUser);
     } else {
       res.status(404).json({ error: "user not found" });
     }
@@ -58,7 +58,7 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     await User.destroy({ where: { id: req.body.userInfos.id } });
-    res.json({ message: "user deleted" });
+    return res.json({ message: "user deleted" });
   } catch (error) {
     return res.status(500).json({ error });
   }
