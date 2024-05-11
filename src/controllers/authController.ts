@@ -4,7 +4,7 @@ import User from "../models/User";
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-export const Login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
 
