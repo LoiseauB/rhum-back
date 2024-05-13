@@ -14,7 +14,9 @@ export const addFavorite = async (req: Request, res: Response) => {
 export const deleteFavorite = async (req: Request, res: Response) => {
   try {
     const { bottleId, userInfos } = req.body;
-    await Favorite.destroy({ where: { BottleId: bottleId, UserId: userInfos.id } });
+    await Favorite.destroy({
+      where: { BottleId: bottleId, UserId: userInfos.id },
+    });
     res.json({ message: "favorite deleted successfully" });
   } catch (error) {
     res.status(500).json({ error });

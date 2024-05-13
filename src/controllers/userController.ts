@@ -13,29 +13,31 @@ export const createUser = async (req: Request, res: Response) => {
       pseudo,
       role,
     });
-    return res
+    res
       .status(201)
       .json({ message: `User ${user.pseudo} was created successfully` });
   } catch (error) {
-    return res.status(400).json({ message: error });
+    res.status(400).json({ error });
   }
 };
 
 export const getAllUser = async (req: Request, res: Response) => {
   try {
-    const users = await User.scope('withoutPassword').findAll();
-    return res.json({ users });
+    const users = await User.scope("withoutPassword").findAll();
+    res.json({ users });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    res.status(500).json({ error });
   }
 };
 
 export const findUser = async (req: Request, res: Response) => {
   try {
-    const user = await User.scope('withoutPassword').findByPk(req.body.userInfos.id);
-    return res.json({ user });
+    const user = await User.scope("withoutPassword").findByPk(
+      req.body.userInfos.id
+    );
+    res.json({ user });
   } catch (error) {
-    return res.status(500).json({ error });
+    res.status(500).json({ error });
   }
 };
 
@@ -45,7 +47,9 @@ export const updateUser = async (req: Request, res: Response) => {
       where: { id: req.body.userInfos.id },
     });
     if (updated) {
-      const updatedUser = await User.scope('withoutPassword').findByPk(req.body.userInfos.id);
+      const updatedUser = await User.scope("withoutPassword").findByPk(
+        req.body.userInfos.id
+      );
       return res.json(updatedUser);
     } else {
       res.status(404).json({ error: "user not found" });

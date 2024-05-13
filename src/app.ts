@@ -13,6 +13,7 @@ const registerRoutes: Router = require("./routes/register");
 const userRoutes: Router = require("./routes/user");
 const ratingRoutes: Router = require("./routes/rating");
 const favoriteRoutes: Router = require("./routes/favorite");
+const bottleRoutes: Router = require("./routes/bottle");
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -26,3 +27,4 @@ app.use("/api/register", registerRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/rating", ratingRoutes);
 app.use("/api/favorite", favoriteRoutes);
+app.use("/api/bottle", bottleRoutes);
