@@ -23,7 +23,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getAllUser = async (req: Request, res: Response) => {
   try {
-    const users = await User.findAll();
+    const users = await User.scope('withoutPassword').findAll();
     return res.json({ users });
   } catch (error) {
     return res.status(500).json({ message: error });
@@ -32,7 +32,7 @@ export const getAllUser = async (req: Request, res: Response) => {
 
 export const findUser = async (req: Request, res: Response) => {
   try {
-    const user = await User.findByPk(req.body.userInfos.id);
+    const user = await User.scope('withoutPassword').findByPk(req.body.userInfos.id);
     return res.json({ user });
   } catch (error) {
     return res.status(500).json({ error });
@@ -45,7 +45,7 @@ export const updateUser = async (req: Request, res: Response) => {
       where: { id: req.body.userInfos.id },
     });
     if (updated) {
-      const updatedUser = await User.findByPk(req.body.userInfos.id);
+      const updatedUser = await User.scope('withoutPassword').findByPk(req.body.userInfos.id);
       return res.json(updatedUser);
     } else {
       res.status(404).json({ error: "user not found" });

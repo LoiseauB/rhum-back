@@ -7,7 +7,6 @@ const bcrypt = require("bcrypt");
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
-
   if (user && (await bcrypt.compare(password, user.password))) {
     const SECRET_KEY = process.env.JWT_SECRET;
     const token = jwt.sign(
