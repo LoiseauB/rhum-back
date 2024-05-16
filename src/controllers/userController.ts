@@ -42,8 +42,18 @@ export const findUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
+  let hashedPassword;
+  if(req.body.password) {
+    const password = req.body.password
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "password must have min 6 characters" });
+    }
+    hashedPassword = await bcrypt.hash(password, 10);
+  }
   try {
-    const [updated] = await User.update(req.body, {
+    const [updated] = await User.update({...req.body, password: hashedPassword}, {
       where: { id: req.body.userInfos.id },
     });
     if (updated) {
@@ -59,9 +69,46 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+export const updateUserAdmin = async (req: Request, res: Response) => {
+  let hashedPassword;
+  if(req.body.password) {
+    const password = req.body.password
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "password must have min 6 characters" });
+    }
+    hashedPassword = await bcrypt.hash(password, 10);
+  }
+  try {
+    const [updated] = await User.update({...req.body, password: hashedPassword}, {
+      where: { id: req.body.userId },
+    });
+    if (updated) {
+      const updatedUser = await User.scope("withoutPassword").findByPk(
+        req.body.userId
+      );
+      return res.json(updatedUser);
+    } else {
+      res.status(404).json({ error: "user not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     await User.destroy({ where: { id: req.body.userInfos.id } });
+    return res.json({ message: "user deleted" });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+
+export const deleteUserAdmin = async (req: Request, res: Response) => {
+  try {
+    await User.destroy({ where: { id: req.body.userId } });
     return res.json({ message: "user deleted" });
   } catch (error) {
     return res.status(500).json({ error });

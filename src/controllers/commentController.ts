@@ -40,3 +40,15 @@ export const deleteComment = async (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 }
+
+export const deleteCommentAdmin = async (req: Request, res: Response) => {
+  try {
+    const { bottleId, userId, id } = req.body;
+    await Comment.destroy({
+      where: { bottleId: bottleId, userId, id },
+    });
+    res.json({ message: "comment deleted" });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}

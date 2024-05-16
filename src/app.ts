@@ -15,6 +15,7 @@ const ratingRoutes: Router = require("./routes/rating");
 const favoriteRoutes: Router = require("./routes/favorite");
 const bottleRoutes: Router = require("./routes/bottle");
 const commentRoutes: Router = require("./routes/comment");
+const adminRoutes: Router = require("./routes/admin");
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -30,3 +31,4 @@ app.use("/api/rating", ratingRoutes);
 app.use("/api/favorite", favoriteRoutes);
 app.use("/api/bottle", bottleRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/admin", adminRoutes);
