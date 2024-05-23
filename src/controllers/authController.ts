@@ -14,8 +14,13 @@ export const login = async (req: Request, res: Response) => {
       SECRET_KEY,
       { expiresIn: "24h" }
     );
-    res.json({ token });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.json({ message: "connect successfully" });
   } else {
-    res.status(401).json({ error: "Bad credentials" });
+    res.status(401).json({ error: "bad credentials" });
   }
 };

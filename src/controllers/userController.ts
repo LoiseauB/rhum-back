@@ -35,7 +35,8 @@ export const findUser = async (req: Request, res: Response) => {
     const user = await User.scope("withoutPassword").findByPk(
       req.body.userInfos.id
     );
-    res.json({ user });
+    const userFavorites = await user.getBottles();
+    res.json({ user, userFavorites });
   } catch (error) {
     res.status(500).json({ error });
   }

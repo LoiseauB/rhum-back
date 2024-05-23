@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser"
 import { Express, Router } from "express";
 
 export const express = require("express");
@@ -19,8 +20,12 @@ const adminRoutes: Router = require("./routes/admin");
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true
+}));
 app.use(helmet());
 
 app.use("/api", defaultRoutes);
