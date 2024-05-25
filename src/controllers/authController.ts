@@ -19,7 +19,7 @@ export const login = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
-    res.json({ message: "connect successfully" });
+    res.json({ message: "connect successfully", userId: user.id, role: user.role, pseudo: user.pseudo });
   } else {
     res.status(401).json({ error: "bad credentials" });
   }
