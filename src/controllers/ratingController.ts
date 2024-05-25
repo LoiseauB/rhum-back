@@ -11,27 +11,10 @@ export const addRate = async (req: Request, res: Response) => {
   }
 };
 
-export const updateRate = async (req: Request, res: Response) => {
-  try {
-    const { bottleId, userInfos, rating } = req.body;
-    const [updated] = await Rating.update(
-      { rating },
-      {
-        where: { bottleId: bottleId, userId: userInfos.id },
-      }
-    );
-    if (updated) {
-      return res.json({ message: "rate updated" });
-    }
-    res.status(404).json({ error: "rate don't found" });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
-
 export const deleteRate = async (req: Request, res: Response) => {
   try {
-    const { bottleId, userInfos } = req.body;
+    const { bottleId } = req.params;
+    const { userInfos } = req.body;
     await Rating.destroy({
       where: { bottleId: bottleId, userId: userInfos.id },
     });
@@ -43,8 +26,9 @@ export const deleteRate = async (req: Request, res: Response) => {
 
 export const getRate = async (req: Request, res: Response) => {
   try {
-    const { bottleId, userInfos } = req.body;
-    const rate = Rating.findOne({
+    const { bottleId } = req.params;
+    const { userInfos } = req.body;
+    const rate = await Rating.findOne({
       where: { bottleId: bottleId, userId: userInfos.id },
     });
     if (!rate) {
