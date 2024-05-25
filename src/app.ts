@@ -29,7 +29,7 @@ app.use(cors({
 app.use(helmet());
 
 app.use("/api", defaultRoutes);
-app.use("/api/login", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/register", registerRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/rating", ratingRoutes);

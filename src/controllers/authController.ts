@@ -24,3 +24,8 @@ export const login = async (req: Request, res: Response) => {
     res.status(401).json({ error: "bad credentials" });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  res.clearCookie('jwt');
+  res.status(200).json({ message: 'Successfully logged out' });
+}
