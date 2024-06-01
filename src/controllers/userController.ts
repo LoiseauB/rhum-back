@@ -101,17 +101,18 @@ export const updateUserAdmin = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     await User.destroy({ where: { id: req.body.userInfos.id } });
-    return res.json({ message: "user deleted" });
+    res.clearCookie('jwt');
+    res.json({ message: "user deleted" });
   } catch (error) {
-    return res.status(500).json({ error });
+    res.status(500).json({ error });
   }
 };
 
 export const deleteUserAdmin = async (req: Request, res: Response) => {
   try {
     await User.destroy({ where: { id: req.body.userId } });
-    return res.json({ message: "user deleted" });
+    res.json({ message: "user deleted" });
   } catch (error) {
-    return res.status(500).json({ error });
+    res.status(500).json({ error });
   }
 };
