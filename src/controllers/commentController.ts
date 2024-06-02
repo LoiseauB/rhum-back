@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import Comment from "../models/Comment";
 
+export const getAllComments = async (req: Request, res: Response) => {
+  try {
+    const comments = await Comment.findAll();
+    res.json({ comments });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
 export const addComment = async (req: Request, res: Response) => {
   try {
     const { bottleId, userInfos, comment } = req.body;
@@ -33,22 +42,22 @@ export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { bottleId, userInfos, id } = req.body;
     await Comment.destroy({
-      where: { bottleId: bottleId, userId: userInfos.id, id },
+      where: { bottleId, userId: userInfos.id, id },
     });
     res.json({ message: "comment deleted" });
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 export const deleteCommentAdmin = async (req: Request, res: Response) => {
   try {
     const { bottleId, userId, id } = req.body;
     await Comment.destroy({
-      where: { bottleId: bottleId, userId, id },
+      where: { bottleId, userId, id },
     });
     res.json({ message: "comment deleted" });
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
