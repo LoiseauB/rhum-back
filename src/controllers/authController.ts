@@ -16,7 +16,7 @@ export const login = async (req: Request, res: Response) => {
     );
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,  // process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
     res.json({ message: "connect successfully", userId: user.id, role: user.role, pseudo: user.pseudo, email: user.email });
