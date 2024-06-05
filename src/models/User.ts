@@ -34,6 +34,11 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       field:"role",
       allowNull: false
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      field:"avatar",
+      allowNull: true
     }
   },
   {

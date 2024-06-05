@@ -28,12 +28,12 @@ export const findBottle = async (req: Request, res: Response) => {
         {
           model: Comment,
           as: "comments",
-          attributes: ["id", "comment", 'userId'],
+          attributes: ["id", "comment", "userId"],
           include: [
             {
               model: User,
-              as: "user", 
-              attributes: ["pseudo"],
+              as: "user",
+              attributes: ["pseudo", "avatar"],
             },
           ],
         },
