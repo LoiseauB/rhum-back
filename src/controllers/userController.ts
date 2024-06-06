@@ -49,7 +49,9 @@ export const updateUser = async (req: CustomRequest, res: Response) => {
   if (req.body.password) {
     const password = req.body.password;
     if (password.length < 6) {
-      return res.status(400).json({ error: "Password must have a minimum of 6 characters" });
+      return res
+        .status(400)
+        .json({ error: "Password must have a minimum of 6 characters" });
     }
     hashedPassword = await bcrypt.hash(password, 10);
   }
@@ -70,14 +72,16 @@ export const updateUser = async (req: CustomRequest, res: Response) => {
     console.log(updated);
 
     if (updated) {
-      const updatedUser = await User.scope("withoutPassword").findByPk(req.userInfos.id);
+      const updatedUser = await User.scope("withoutPassword").findByPk(
+        req.userInfos.id
+      );
       if (!updatedUser) {
         return res.status(404).json({ error: "User not found" });
       }
 
       if (req.file) {
         if (updatedUser.avatar) {
-          await unlink(updatedUser.avatar,(err) => {
+          await unlink(updatedUser.avatar, (err) => {
             console.error("Error removing old avatar:", err);
           });
         }
@@ -92,42 +96,73 @@ export const updateUser = async (req: CustomRequest, res: Response) => {
   } catch (error) {
     console.error(error);
     if (req.file) {
-      await unlink(req.file.path,(err) => {
+      await unlink(req.file.path, (err) => {
         console.error("Error removing uploaded file:", err);
       });
     }
-    return res.status(500).json({ error: "An error occurred while updating the user" });
+    return res
+      .status(500)
+      .json({ error: "An error occurred while updating the user" });
   }
 };
 
-export const updateUserAdmin = async (req: Request, res: Response) => {
-  let hashedPassword;
+export const updateUserAdmin = async (req: CustomRequest, res: Response) => {
+  let hashedPassword: string | undefined;
   if (req.body.password) {
     const password = req.body.password;
     if (password.length < 6) {
       return res
         .status(400)
-        .json({ error: "password must have min 6 characters" });
+        .json({ error: "Password must have a minimum of 6 characters" });
     }
     hashedPassword = await bcrypt.hash(password, 10);
   }
   try {
+    console.log(req.body)
+    const { email, pseudo, userId , role} = req.body;
     const [updated] = await User.update(
-      { ...req.body, password: hashedPassword },
       {
-        where: { id: req.body.userId },
+        email,
+        pseudo,
+        role,
+        password: hashedPassword,
+      },
+      {
+        where: { id: userId },
       }
     );
     if (updated) {
       const updatedUser = await User.scope("withoutPassword").findByPk(
-        req.body.userId
+        userId
       );
+      if (!updatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (req.file) {
+        if (updatedUser.avatar) {
+          await unlink(updatedUser.avatar, (err) => {
+            console.error("Error removing old avatar:", err);
+          });
+        }
+        updatedUser.avatar = req.file.path;
+        await updatedUser.save();
+      }
+
       return res.json(updatedUser);
     } else {
-      res.status(404).json({ error: "user not found" });
+      return res.status(404).json({ error: "User not found" });
     }
   } catch (error) {
-    return res.status(500).json({ error });
+    console.error(error);
+    if (req.file) {
+      await unlink(req.file.path, (err) => {
+        console.error("Error removing uploaded file:", err);
+      });
+    }
+    return res
+      .status(500)
+      .json({ error: "An error occurred while updating the user" });
   }
 };
 
