@@ -187,7 +187,7 @@ export const deleteUserAdmin = async (req: Request, res: Response) => {
     const user = await User.findByPk(req.body.userId);
     if (user.avatar) {
       await unlink(user.avatar, (err) => {
-        if (err) throw err;
+        if (err) console.log(err);
       });
     }
     await User.destroy({ where: { id: req.body.userId } });
