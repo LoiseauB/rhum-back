@@ -118,8 +118,8 @@ export const updateUserAdmin = async (req: CustomRequest, res: Response) => {
     hashedPassword = await bcrypt.hash(password, 10);
   }
   try {
-    console.log(req.body)
-    const { email, pseudo, userId , role} = req.body;
+    console.log(req.body);
+    const { email, pseudo, userId, role } = req.body;
     const [updated] = await User.update(
       {
         email,
@@ -132,9 +132,7 @@ export const updateUserAdmin = async (req: CustomRequest, res: Response) => {
       }
     );
     if (updated) {
-      const updatedUser = await User.scope("withoutPassword").findByPk(
-        userId
-      );
+      const updatedUser = await User.scope("withoutPassword").findByPk(userId);
       if (!updatedUser) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -171,7 +169,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     const user = await User.findByPk(req.body.userInfos.id);
     if (user.avatar) {
       await unlink(user.avatar, (err) => {
-        if (err) throw err;
+        if (err) console.log(err);
       });
     }
     await User.destroy({ where: { id: req.body.userInfos.id } });
